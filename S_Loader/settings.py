@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'S_Loader.wsgi.application'
 DATABASES = {  
     'default': {  
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'temp',  
+        'NAME': 's_loader',  
         'USER': 'root',  
-        'PASSWORD': 'Kishan@123',  
+        'PASSWORD': 'Searce@123',  
         'HOST': '127.0.0.1',  
         'PORT': '3306',  
         'OPTIONS': {  
