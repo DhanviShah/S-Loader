@@ -6,6 +6,11 @@ name = "pypi"
 [packages]
 django = "*"
 mysqlclient = "*"
+pandas = "*"
+numpy = "*"
+mysql-connector-python = "*"
+sqlalchemy = "*"
+openpyxl = "*"
 
 [dev-packages]
 
