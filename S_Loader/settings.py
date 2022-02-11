@@ -77,14 +77,14 @@ WSGI_APPLICATION = 'S_Loader.wsgi.application'
 DATABASES = {  
     'default': {  
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'temp',  
+        'NAME': 'TEMP',  
         'USER': 'root',  
-        'PASSWORD': 'Kishan@123',  
+        'PASSWORD': 'Dsshah@32',  
         'HOST': '127.0.0.1',  
         'PORT': '3306',  
-        'OPTIONS': {  
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
-        }  
+        # 'OPTIONS': {  
+        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+        # }  
     }  
 }  
 
