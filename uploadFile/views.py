@@ -1,17 +1,20 @@
+from multiprocessing import context
 from venv import create
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import HttpResponse
 # import mysql.connector
 from uploadFile.forms import FileForm
 
-
-from django. shortcuts import render
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
 import mysql.connector as sql
 
 import os
+
+
+
 # Create your views here.
 
 def handle_uploaded_file(f):
@@ -32,32 +35,50 @@ def handle_uploaded_file(f):
                         engine = create_engine('mysql+mysqldb://root:Searce123@localhost:3306/s_loader')
                         table_name = os.path.splitext(f.name)[0]
                         df.to_sql(name = table_name, con = engine, index = False)
+
                 elif f.name.endswith('.xls') or f.name.endswith('.xlsx'):
                         df = pd.read_excel('uploadFile/upload/' + f.name, engine = 'openpyxl')
+                        df = df.drop_duplicates()
                         engine = create_engine('mysql+mysqldb://root:Searce123@localhost:3306/s_loader')
                         table_name = os.path.splitext(f.name)[0]
-                        df.to_sql(name = table_name, con = engine, index_label = 'id')
-                
+                        df.to_sql(name = table_name, con = engine, index_label= 'id')
+
+                """"
                 # add id attribute as primary key
-                m=sql.connect(host="localhost",user="root",password="Searce123",database="s_loader")
+                #m=sql.connect(host="localhost",user="root",password="Searce123",database="s_loader")
                 cursor = m.cursor()
                 query = "ALTER TABLE {} ADD COLUMN id INT PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST".format(table_name)
                 cursor.execute(query)
-                m.commit()
+                m.commit()"""
 
 
         else:
-                print('Not an excel file!')
+                print("not an excel file.")
 
 
 def index(request):  
         context = {}
         if request.POST:
                 form = FileForm(request.POST, request.FILES)
+                files = request.FILES.getlist('files')
                 if form.is_valid():
-                        handle_uploaded_file(request.FILES['file'])
+                        for f in files:
+                                handle_uploaded_file(f)
+                                context = {'msg' : 'File successfully uploaded.'}
+                                #messages.success(request, ('A file submitted ...!!'))
+                                        
         else :
                 form = FileForm()
+                context = {'msg' : 'Upload a file.'}
 
         context['form'] = form
+
         return render(request,"basic_form.html",context) 
+
+
+def about(request):
+    return render(request, 'about.html')
+
+def datamonitor(request):
+    return render(request, 'datamonitor.html')
+       

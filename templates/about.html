@@ -11,20 +11,18 @@
 </head>
 
 <style>
-    body {
-        
-        background-color: #D8D8D8;
-      }
-      .center {
-        padding-top: 230px;
+    .center {
+        padding-top: 270px;
         padding-right: 50px;
-        padding-bottom: 220px;
+        padding-bottom: 250px;
         padding-left: 50px;
         
         text-align: center;
         align-items: center;
+        
         background-color: #D8D8D8;
       }
+     
 </style>
 
 
@@ -53,31 +51,16 @@
               <li class="nav-item">
                 <a class="nav-link" href="">Upload</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="datamonitor">Data Monitor</a>
-              </li>
             </ul>
             </div>
         </div>
     </nav>    
     
     <div class="center">
-        {% if msg %} 
-        <div class="alert alert-success d-flex align-items-center" role="alert">
-            <svg class="bi flex-shrink-0 me-2" width="2" height="2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-            <div>
-                {{ msg}}
-            </div>
-        </div>
-        {% endif %}
+        hjbaksbdjkashjkdb
 
-        <form  method="POST"  enctype="multipart/form-data">
-            {%csrf_token%}
-            {{form.as_table}}
-            <input type="submit" value="Submit" class="btn btn-secondary">
-        </form>
+        
     </div>
-
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
