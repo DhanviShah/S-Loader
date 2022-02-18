@@ -70,11 +70,20 @@
             </div>
         </div>
         {% endif %}
-
+        {% if names %} 
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="2" height="2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <div>
+                {{ names}}
+            </div>
+        </div>
+        {% endif %}
         <form  method="POST"  enctype="multipart/form-data">
+            <fieldset>
             {%csrf_token%}
             {{form.as_table}}
             <input type="submit" value="Submit" class="btn btn-secondary">
+            </fieldset>
         </form>
     </div>
 

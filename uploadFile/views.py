@@ -62,10 +62,18 @@ def index(request):
                 form = FileForm(request.POST, request.FILES)
                 files = request.FILES.getlist('files')
                 if form.is_valid():
-                        for f in files:
-                                handle_uploaded_file(f)
-                                context = {'msg' : 'File successfully uploaded.'}
-                                #messages.success(request, ('A file submitted ...!!'))
+                        if len(files)>5:
+                                context = {'msg' : 'You can only upload 5 files at max.'}
+                                
+                        else:
+                                a = []
+                                for i,f in enumerate(files):
+                                        #print(f.name)
+                                        handle_uploaded_file(f)
+                                        a.append(f.name)
+                                
+                                context = {'msg' : 'Following files successfully uploaded.'}
+                                context['names'] = a
                                         
         else :
                 form = FileForm()
