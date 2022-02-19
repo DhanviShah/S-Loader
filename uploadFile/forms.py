@@ -6,5 +6,5 @@ class FileForm(forms.Form):
     
     #For multiple files
     files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    drop_dup = forms.BooleanField(required=False)
-    # display_file_content = forms.BooleanField(required=False)
+    drop_duplicates = forms.BooleanField(required=False)
+    display_file_content = forms.BooleanField(required=False)
