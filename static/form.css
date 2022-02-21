@@ -1,0 +1,37 @@
+* {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    justify-items: center;
+}
+
+.file-upload-form {
+    width: auto;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    box-sizing: border-box;
+    border: 3px solid black;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-top: 10rem;
+}
+
+form {
+    width: 100%;
+    align-items: center;
+    background-color: aqua;
+    margin: auto;
+    font-size: 20px;
+}
+
+input.submit-btn {
+    margin-top: 3rem;
+    max-width: fit-content;
+    height: fit-content;
+    font-size: 20px;
+    border: 1px solid black;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}

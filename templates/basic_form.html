@@ -5,13 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-</head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/form.css' %}">
+ </head>
+
 <body>
-    <form method = 'POST' enctype="multipart/form-data">
-        {%csrf_token%}
-        {{form.as_p}}
-        <input type="submit" value="Submit">
-    </form>
-    
+    <div class="file-upload-form">
+        <form method = 'POST' enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="Submit" class="submit-btn">
+        </form>
+    </div>
 </body>
+
 </html>
