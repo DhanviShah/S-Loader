@@ -12,14 +12,16 @@ from sqlalchemy import create_engine
 import mysql.connector as sql
 
 import os
+import json
 
 
 
 # Create your views here.
 
-def handle_uploaded_file(f):
+def handle_uploaded_file(f, flag_dup, flag_disp):
         if f.name.endswith('.csv') or f.name.endswith('.xls') or f.name.endswith('.xlsx'):
-
+                
+                # flag=False
                 # perform the write operation into the folder (upload at server)
                 with open('uploadFile/upload/' + f.name, 'wb+') as destination: 
                         for chunk in f.chunks():
@@ -30,15 +32,22 @@ def handle_uploaded_file(f):
                         # update mysql database with csv
                         df = pd.read_csv('uploadFile/upload/' + f.name, header=[0])
                         # remove duplicates if two rows match
-                        df = df.drop_duplicates()
-
+                        if flag_dup:
+                                df = df.drop_duplicates()
+                        
+                        #data = df.values.tolist()
+                        data = df.copy()
                         engine = create_engine('mysql+mysqldb://root:Searce123@localhost:3306/s_loader')
                         table_name = os.path.splitext(f.name)[0]
                         df.to_sql(name = table_name, con = engine, index = False)
 
                 elif f.name.endswith('.xls') or f.name.endswith('.xlsx'):
                         df = pd.read_excel('uploadFile/upload/' + f.name, engine = 'openpyxl')
-                        df = df.drop_duplicates()
+                        if flag_dup:
+                                df = df.drop_duplicates()
+                        
+                        #data = df.values.tolist()
+                        data = df.copy()
                         engine = create_engine('mysql+mysqldb://root:Searce123@localhost:3306/s_loader')
                         table_name = os.path.splitext(f.name)[0]
                         df.to_sql(name = table_name, con = engine, index_label= 'id')
@@ -50,22 +59,52 @@ def handle_uploaded_file(f):
                 query = "ALTER TABLE {} ADD COLUMN id INT PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST".format(table_name)
                 cursor.execute(query)
                 m.commit()"""
-
+                if flag_disp:
+                        return data
+                else :
+                        return None
 
         else:
                 print("not an excel file.")
 
 
 def index(request):  
+        data = None
         context = {}
         if request.POST:
                 form = FileForm(request.POST, request.FILES)
                 files = request.FILES.getlist('files')
+                temp_dup = request.POST.get('drop_duplicates', False)
+                temp_display = request.POST.get('display_file_content', False)
+
                 if form.is_valid():
-                        for f in files:
-                                handle_uploaded_file(f)
-                                context = {'msg' : 'File successfully uploaded.'}
-                                #messages.success(request, ('A file submitted ...!!'))
+                        if len(files)>4:
+                                context = {'msg' : 'You can only upload 4 files at max.'}
+                                
+                        else:
+                                file_names = []
+                                file_data = []
+                                arr = []
+                                for i,f in enumerate(files):
+                                        file_cont = handle_uploaded_file(f, temp_dup, temp_display)
+                                        #print(file_cont)
+                                        file_names.append(f.name)
+                                        # file_data.append(file_cont)
+                                        if file_cont is not None:
+                                                jason_records = file_cont.reset_index().to_json(orient = 'records')
+                                                arr = []
+                                                arr = json.loads(jason_records)
+                                        #file_data.append(arr)
+
+                                 
+                                # context['file_cont'] = 
+                                #data = pd.DataFrame(file_cont)
+                                #print(file_cont)
+
+                                #context['d'] = file_data 
+                                context['d'] = arr 
+                                context['msg'] = 'Following files successfully uploaded.'
+                                context['names'] = file_names
                                         
         else :
                 form = FileForm()

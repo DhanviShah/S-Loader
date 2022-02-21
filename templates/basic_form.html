@@ -66,16 +66,61 @@
         <div class="alert alert-success d-flex align-items-center" role="alert">
             <svg class="bi flex-shrink-0 me-2" width="2" height="2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
             <div>
-                {{ msg}}
+                {{ msg }}
             </div>
         </div>
         {% endif %}
-
+        {% if names %} 
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="2" height="2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <div>
+                {{ names }}
+            </div>
+        </div>
+        {% endif %}
+        
+        
         <form  method="POST"  enctype="multipart/form-data">
+            <fieldset>
             {%csrf_token%}
             {{form.as_table}}
             <input type="submit" value="Submit" class="btn btn-secondary">
-        </form>
+            </fieldset>
+          </form><br><br>
+          
+          {% if d %} 
+            <div >
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th> index  </th>
+                    <th>  Bike </th>
+                    <th>  Jan </th>
+                    <th>  Feb  </th>
+                    <th>  March  </th>
+                    <th>  Total  </th>
+                    <th>  Average  </th>
+                    <th>  Count </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for i in d %}
+                  <tr>
+                    <td> {{ i.index }} </td>
+                    <td> {{ i.Bike }} </td>
+                    <td> {{ i.Jan }} </td>
+                    <td> {{ i.Feb }} </td>
+                    <td> {{ i.March }} </td>
+                    <td> {{ i.Total }} </td>
+                    <td> {{ i.Average }} </td>
+                    <td> {{ i.Count }} </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>   
+          {% endif %}
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
