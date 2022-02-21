@@ -13,6 +13,7 @@ import mysql.connector as sql
 
 import os
 import json
+import itertools
 
 
 
@@ -78,14 +79,17 @@ def index(request):
                 temp_display = request.POST.get('display_file_content', False)
 
                 if form.is_valid():
-                        if len(files)>4:
-                                context = {'msg' : 'You can only upload 4 files at max.'}
+                        if len(files)>5:
+                                context = {'msg' : 'You can only upload 5 files at max.'}
                                 
                         else:
                                 file_names = []
-                                file_data = []
-                                arr = []
+                                files_data = []
+                                keys = []
                                 for i,f in enumerate(files):
+
+                                        arr = []
+                                        file_keys =[]
                                         file_cont = handle_uploaded_file(f, temp_dup, temp_display)
                                         #print(file_cont)
                                         file_names.append(f.name)
@@ -94,15 +98,22 @@ def index(request):
                                                 jason_records = file_cont.reset_index().to_json(orient = 'records')
                                                 arr = []
                                                 arr = json.loads(jason_records)
-                                        #file_data.append(arr)
+
+                                                file_keys = arr[0].keys()
+                                                files_data.append(arr)
+                                                keys.append(file_keys)
 
                                  
                                 # context['file_cont'] = 
                                 #data = pd.DataFrame(file_cont)
                                 #print(file_cont)
 
-                                #context['d'] = file_data 
-                                context['d'] = arr 
+                                #_____context['all_files'] = files_data 
+                                
+                                #context['d'] = arr 
+                                #____context['all_keys'] = keys
+                                
+                                context['files_and_keys'] = zip(files_data, keys)
                                 context['msg'] = 'Following files successfully uploaded.'
                                 context['names'] = file_names
                                         
@@ -114,10 +125,3 @@ def index(request):
 
         return render(request,"basic_form.html",context) 
 
-
-def about(request):
-    return render(request, 'about.html')
-
-def datamonitor(request):
-    return render(request, 'datamonitor.html')
-       
